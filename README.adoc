@@ -2,7 +2,7 @@
 
 === First install Mongodb base and then run the script
 
-`chmod + script.sh && sh script.sh`
+`chmod +x script.sh && sh script.sh`
 
 === Run the server and the app :
 

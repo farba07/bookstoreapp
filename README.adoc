@@ -10,6 +10,8 @@
 
 Open the app at http://localhost:8500
 
+=== License 
+
 include::License.adoc[]
 
 

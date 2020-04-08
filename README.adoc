@@ -2,16 +2,15 @@
 
 === First install Mongodb base and then run the script
 
-`chmod + script.sh`
-`sh script.sh`
+`chmod + script.sh && sh script.sh`
 
 === Run the server and the app :
 
 `node index.js`
 
- Open the app at http://localhost:8500
+Open the app at http://localhost:8500
 
- 
+
 
 
     

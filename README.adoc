@@ -10,7 +10,7 @@
 
 Open the app at http://localhost:8500
 
-include::https://github.com/farba07/bookstoreapp/blob/master/License.adoc
+include::https://github.com/farba07/bookstoreapp/blob/master/License.adoc[]
 
 
 

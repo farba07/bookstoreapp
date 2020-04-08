@@ -4,6 +4,12 @@
 
 `chmod +x script.sh && sh script.sh`
 
+=== Install nodejs express and socket.io 
+
+`apt-get install nodejs` +
+`npm install socket.io` +
+`npm install express`
+
 === Run the server and the app :
 
 `node index.js`

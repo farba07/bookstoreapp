@@ -2,93 +2,39 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <!--<link rel="stylesheet" type="text/css" href="../public/style.css">-->
-    <style>
-        .menu {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    background-color: #333;
-}
-
-.menu li {
-    float: left;
-}
-
-.menu li a, .dropbtn {
-    display: inline-block;
-    color: white;
-    text-align: center;
-    padding: 14px 16px;
-    text-decoration: none;
-}
-
-.menu li a:hover, .dropdown:hover .dropbtn {
-    background-color: blue;
-}
-
-.menu li.dropdown {
-    display: inline-block;
-}
-
-.dropdown-content {
-    display: none;
-    position: absolute;
-    background-color: #f9f9f9;
-    min-width: 160px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 1;
-}
-
-.dropdown-content a {
-    color: black;
-    padding: 12px 16px;
-    text-decoration: none;
-    display: block;
-    text-align: left;
-}
-
-.dropdown-content a:hover {background-color: #f1f1f1;}
-
-.dropdown:hover .dropdown-content {
-    display: block;
-}
-    </style>
+    <link rel="stylesheet" type="text/css" href="style.css">    
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js"></script>
-    <!--<script src="./socket.io/socket.io.js"></script>-->
-   
-    <script src="http://code.jquery.com/jquery-1.5.min.js"></script>
+    <script src="https://d3js.org/d3.v5.min.js"></script>
 
     <title>Bibliothèque</title>
 </head>
 <body>
 <ul class="menu">
     <li id="acc">
-        <a href="/">
+        <button href="index.html">
             Accueil
-        </a>
+        </button>
     </li>
     <li id="livres">
-        <a href="/" onclick="getLivres()">
+        <button onclick="getLivres()">
             Livres
-        </a>
+        </button>
     </li>
     <li id="auteurs">
-        <a href="/auteurs">
+        <button onclick="getAuth()">
             Auteurs
-        </a>
+        </button>
     </li>
     <li>
-        <a href="/graphe">
+        <button onclick="getGraph()">
             Graphe
-        </a>
+        </button>
     </li>
 </ul>
 
 <h3>Présentation d'un jeu de données sur des livres en informatique </h3>
-<p>
-    <ul >
+<p  id="presentation">
+    <ul>
         <li>Une base de données MongoDB contenant ds données sur quelques livres en informatique</li>
         <li>Un serveur Nodejs pour servir des données</li>
         <li>Une visualisation des données avec D3.js</li>
@@ -98,14 +44,66 @@
 <div id="content">
 
 </div>
+<script>
+    //import $ from jQuery;
+    var socket = io.connect();
+
+    function getLivres(){
+        socket.emit('liv');
+    }
+
+    function getAuth(){
+        socket.emit('auth');
+    }
+
+    function getGraph(){
+        socket.emit('graph');
+    }
+
+    socket.on('respliv', function(result){
+        var content = document.getElementById('content');
+
+        content.innerHTML = "";
+        content.innerHTML += "<ul>";
+        result.forEach(element => {
+            content.innerHTML += "<li>"+ element.title + "</li>";
+        });
+        content.innerHTML += "</ul>";
+    });
+
+    socket.on('respauth', function(result){
+        var content = document.getElementById('content');
+        
+        content.innerHTML = "";
+        content.innerHTML += "<ul>";
+        result.forEach(element => {
+            content.innerHTML += "<li>"+ element.authors + "</li>";
+        });
+        content.innerHTML += "</ul>";
+    });
+
+    socket.on('respgraph', function(result){
+        var content = document.getElementById('content');
+        content.innerHTML = "";
+        
+        content.innerHTML += "<h1>D3.json et Mongodb</h1>";
+        
+        result.forEach(element => {
+            d3.select("body")
+            .selectAll("li")
+            .data(result)
+            .enter()
+            .append("li")
+            .attr("class", "bar")
+            .style("height", function(d) {
+                var barHeight = d * 5;
+                return barHeight + "px";
+            });
+ 
+        });
+           
+    });
+</script>
 
 </body>
 </html>
-
-<script>
-    //var socket = io.connect();
-    
-    function getLivres(){
-        socket.emit('livres');    
-    }
-</script>
